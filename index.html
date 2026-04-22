@@ -10,47 +10,47 @@
       background: #000;
       color: #0f0;
       text-align: center;
-      padding-top: 30px;
+      padding-top: 25px;
     }
     .price {
-      font-size: 28px;
-      margin: 20px 0;
+      font-size: 24px;
+      margin: 15px 0;
     }
   </style>
 </head>
 
 <body>
-  <h2>📊 Market Watch</h2>
+  <h3>📊 Market</h3>
 
-  <div class="price" id="btc">BTC: loading...</div>
-  <div class="price" id="gold">XAUT: loading...</div>
+  <div class="price" id="btc">BTC: --</div>
+  <div class="price" id="gold">XAUT: --</div>
 
 <script>
+let lastData = {
+  btc: "--",
+  gold: "--"
+};
+
 async function loadData() {
   try {
-    const data = await fetch(
-      "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,tether-gold&vs_currencies=usd"
-    ).then(r => r.json());
+    const res = await fetch("/api/price");
+    const data = await res.json();
 
-    // BTC
-    document.getElementById("btc").innerText =
-      "BTC: $" + data.bitcoin.usd;
-
-    // XAUT（Tether Gold）
-    document.getElementById("gold").innerText =
-      "XAUT: $" + data["tether-gold"].usd;
+    lastData = data;
 
   } catch (e) {
-    document.getElementById("btc").innerText = "BTC: error";
-    document.getElementById("gold").innerText = "XAUT: error";
+    console.log("use cache");
   }
+
+  document.getElementById("btc").innerText =
+    "BTC: $" + lastData.btc;
+
+  document.getElementById("gold").innerText =
+    "XAUT: $" + lastData.gold;
 }
 
-// 首次加载
 loadData();
-
-// 每60秒刷新
-setInterval(loadData, 60000);
+setInterval(loadData, 120000); // 2分钟刷新（更稳）
 </script>
 
 </body>
