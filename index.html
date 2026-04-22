@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Market Watch</title>
+  <style>
+    body {
+      font-family: -apple-system;
+      background: #000;
+      color: #0f0;
+      text-align: center;
+      padding-top: 30px;
+    }
+    .price {
+      font-size: 28px;
+      margin: 20px 0;
+    }
+  </style>
+</head>
+
+<body>
+  <h2>📊 Market Watch</h2>
+
+  <div class="price" id="btc">BTC: loading...</div>
+  <div class="price" id="gold">XAUT: loading...</div>
+
+<script>
+async function loadData() {
+  try {
+    const data = await fetch(
+      "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,tether-gold&vs_currencies=usd"
+    ).then(r => r.json());
+
+    // BTC
+    document.getElementById("btc").innerText =
+      "BTC: $" + data.bitcoin.usd;
+
+    // XAUT（Tether Gold）
+    document.getElementById("gold").innerText =
+      "XAUT: $" + data["tether-gold"].usd;
+
+  } catch (e) {
+    document.getElementById("btc").innerText = "BTC: error";
+    document.getElementById("gold").innerText = "XAUT: error";
+  }
+}
+
+// 首次加载
+loadData();
+
+// 每60秒刷新
+setInterval(loadData, 60000);
+</script>
+
+</body>
+</html>
