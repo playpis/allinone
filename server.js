@@ -6,6 +6,8 @@ app.use(express.static("./"));
 let cache = {
   btc: "--",
   btc_24h: 0,
+  xmr: "--",
+  xmr_24h: 0,
   gold: "--",
   gold_24h: 0,
   time: 0
@@ -22,7 +24,7 @@ app.get("/api/price", async (req, res) => {
 
   try {
     const r = await fetch(
-      "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,tether-gold&vs_currencies=usd&include_24hr_change=true"
+      "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,monero,tether-gold&vs_currencies=usd&include_24hr_change=true"
     );
 
     const data = await r.json();
@@ -31,6 +33,9 @@ app.get("/api/price", async (req, res) => {
       btc: data.bitcoin.usd,
       btc_24h: data.bitcoin.usd_24h_change?.toFixed(2) ?? 0,
 
+      xmr: data.monero.usd,
+      xmr_24h: data.monero.usd_24h_change?.toFixed(2) ?? 0,
+      
       gold: data["tether-gold"].usd,
       gold_24h: data["tether-gold"].usd_24h_change?.toFixed(2) ?? 0,
 
