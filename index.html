@@ -73,6 +73,12 @@
     <div class="change" id="btc-change"></div>
   </div>
 
+<div class="card">
+  <div class="name">Monero</div>
+  <div class="price" id="xmr-price">--</div>
+  <div class="change" id="xmr-change"></div>
+</div>
+  
   <div class="card">
     <div class="name">Tether Gold</div>
     <div class="price" id="gold-price">--</div>
@@ -87,6 +93,8 @@
 let last = {
   btc: "--",
   btc_24h: 0,
+  xmr: "--",
+  xmr_24h: 0,
   gold: "--",
   gold_24h: 0
 };
@@ -101,6 +109,7 @@ async function loadData() {
   }
 
   updateUI("btc", last.btc, last.btc_24h);
+  updateUI("xmr", last.xmr, last.xmr_24h);
   updateUI("gold", last.gold, last.gold_24h);
 
   document.getElementById("time").innerText =
